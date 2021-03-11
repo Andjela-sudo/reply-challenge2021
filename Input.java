@@ -2,9 +2,9 @@ package com.company;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 
 class Grid {
@@ -61,7 +61,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            File myObj = new File("input.txt");
+            File myObj = new File("input2.txt");
             Scanner reader = new Scanner(myObj);
             Grid grid = new Grid();
             List<Building> buildingList = new ArrayList<>();
@@ -94,7 +94,7 @@ public class Main {
                     antennaList.get(i).c = stringSc.nextInt();
                 }
             }
-            for( Building b : buildingList){
+            /*for( Building b : buildingList){
                 System.out.print("x: " +b.x);
                 System.out.print(" y: " +b.y);
                 System.out.print(" l: " +b.l);
@@ -105,12 +105,55 @@ public class Main {
             for( Antenna a : antennaList){
                 System.out.print("r: " +a.r);
                 System.out.print(" c: " +a.c +"\n");
+            }*/
+            List<Integer> a = new ArrayList<>();
+            for(int i = 0; i < grid.w; i++){
+                a.add(i);
             }
+            Collections.shuffle(a);
+            List<Integer> b = new ArrayList<>();
+            for(int i = 0; i < grid.h; i++){
+                b.add(i);
+            }
+            Collections.shuffle(b);
+            List<String> c = new ArrayList();
+
+
+            Set<Integer> set = new HashSet<>();
+            int size = grid.h * grid.w;
+            System.out.println(size);
+            Random r = new Random();
+            while(set.size() < grid.m){
+                set.add(r.nextInt(size));
+            }
+            for(int s : set){
+                c.add(s/grid.w + " " + s%grid.h);
+            }
+
+            System.out.println(c.size());
+
+
+
+
+            FileWriter myWriter = new FileWriter("output.txt");
+            myWriter.write(grid.m +"\n");
+            System.out.println(grid.m);
+            for(int i = 0; i < grid.m;i++){
+                myWriter.write(i+" " +c.get(i)+"\n");
+                System.out.println(i);
+            }
+            myWriter.flush();
+
+            myWriter.close();
+
+
 
             reader.close();
         } catch (FileNotFoundException var4) {
             System.out.println("An error occurred.");
             var4.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
